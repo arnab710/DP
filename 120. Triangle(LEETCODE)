@@ -1,0 +1,62 @@
+// done from bottom to up method .. try it .. 
+//memo & tabulation
+
+class Solution {
+private:
+    int solver(vector<vector<int>>& tri, int level, int count, int ind,vector<vector<int>>&dp){
+        if(ind>=tri[level].size() || ind<0) return 1e9;
+        if(level==0) return tri[level][ind];
+        
+        if(dp[level][ind]!=-1) return dp[level][ind];
+        
+        int mini = INT_MAX;
+        if(count==0){
+        for(int i=0;i<tri[level].size();i++){
+            
+           int first = tri[level][i] + solver(tri,level-1,count+1,i-1,dp);
+           int second = tri[level][i] + solver(tri,level-1,count+1,i,dp);
+            
+            mini = min(mini,min(first,second));
+        }}
+        else{
+            
+            int first = tri[level][ind] + solver(tri,level-1,count+1,ind-1,dp);
+            int second = tri[level][ind] + solver(tri,level-1,count+1,ind,dp);
+            
+            mini = min(first,second);
+        }
+        return dp[level][ind] = mini;
+    }
+public:
+    int minimumTotal(vector<vector<int>>& tri) {
+        
+        int n = tri.size();
+        vector<vector<int>>dp(n,vector<int>(n,-1));
+        //return solver(tri,n-1,0,0,dp);
+        
+        for(int i = 0; i < n ;i++){
+            
+            for(int j = 0; j < tri[i].size(); j++){
+                
+                if(i==0) dp[i][j] = tri[0][0];
+                else{
+                    int mini = INT_MAX;
+                    int first = INT_MAX; 
+                    int second = INT_MAX;
+                      if(j-1>=0 && j-1<tri[i-1].size()) first = tri[i][j] + dp[i-1][j-1];
+                       if(j>=0 && j<tri[i-1].size())    second = tri[i][j] + dp[i-1][j];
+                    
+                    mini = min(first,second);
+                    
+                    dp[i][j] = mini;
+                }
+            }
+        }
+        int mini = INT_MAX;
+        for(int i = 0;i<dp[n-1].size();i++){
+            
+            mini = min(mini,dp[n-1][i]);
+        }
+        return mini;
+    }
+};
