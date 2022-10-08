@@ -1,0 +1,17 @@
+#include <bits/stdc++.h>
+int solver(int &n, int &w, vector<int>& pro, vector<int> &wei, int wi,int i,vector<vector<int>>& dp){
+
+    if(wi>w) return -1e7;
+    if(i==n) return 0;
+    if(dp[i][wi]!=-1) return dp[i][wi];
+    
+    int first = pro[i] + solver(n,w,pro,wei,wi+wei[i],i,dp);
+    int second = 0 + solver(n,w,pro,wei,wi,i+1,dp);
+    
+    return dp[i][wi] = max(first,second);
+}
+int unboundedKnapsack(int n, int w, vector<int> &profit, vector<int> &weight)
+{
+    vector<vector<int>>dp(n,vector<int>(w+1,-1));
+    return solver(n,w,profit,weight,0,0,dp);
+}
