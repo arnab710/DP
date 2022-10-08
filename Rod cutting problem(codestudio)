@@ -1,4 +1,4 @@
-//my approach....
+//my approach....according to question......
 #include<bits/stdc++.h>
 int solver(vector<int> &price, int n, int i,vector<vector<int>>&dp){
     if(n<0) return -1e7;
@@ -17,3 +17,26 @@ int cutRod(vector<int> &price, int n)
     vector<vector<int>>dp(n,vector<int>(n+1,-1));
     return solver(price,n,0,dp);
 }
+
+//striver approach .. backward .. becoming knapsack ....
+//brilliant approach...
+#include<bits/stdc++.h>
+int solver(vector<int> &price, int &n, int i, int sum,vector<vector<int>>& dp){
+    if(sum>n) return -1e7;
+    if(i==n){
+        if(sum==n) return 0;
+        return -1e7;
+    }
+    if(dp[i][sum]!=-1) return dp[i][sum];
+    
+    int first = price[i] + solver(price,n,i,sum+(i+1),dp);
+    int second = 0 + solver(price,n,i+1,sum,dp);
+    
+    return dp[i][sum] = max(first,second);
+}
+int cutRod(vector<int> &price, int n)
+{    
+    vector<vector<int>>dp(n,vector<int>(n+1,-1));
+	return solver(price,n,0,0,dp);
+}
+
