@@ -1,0 +1,19 @@
+//my approach....
+#include<bits/stdc++.h>
+int solver(vector<int> &price, int n, int i,vector<vector<int>>&dp){
+    if(n<0) return -1e7;
+    if(n==0) return 0;
+    if(i==price.size()){
+          return price[n-1];
+    }
+    if(dp[i][n]!=-1) return dp[i][n];
+        
+    int first = price[i] + solver(price,n-(i+1),i,dp);
+    int second = 0 + solver(price,n,i+1,dp);
+    return dp[i][n] = max(first,second);
+}
+int cutRod(vector<int> &price, int n)
+{    
+    vector<vector<int>>dp(n,vector<int>(n+1,-1));
+    return solver(price,n,0,dp);
+}
