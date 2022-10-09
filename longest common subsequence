@@ -1,0 +1,50 @@
+//memorization as well as tabulation...
+class Solution {
+// private:
+//     int solver(string &text1, string &text2, int &n1, int &n2, int i1, int i2,vector<vector<int>>& dp){
+        
+//         if(i1==n1 || i2==n2) return 0; 
+//         if(dp[i1][i2]!=-1) return dp[i1][i2];
+        
+//         if(text1[i1]==text2[i2]){
+//             int ans = 1 + solver(text1,text2,n1,n2,i1+1,i2+1,dp);
+//             return dp[i1][i2] = ans;
+//         }
+//         else{
+//             int ans1 = 0 + solver(text1,text2,n1,n2,i1+1,i2,dp);
+//             int ans2 = 0 + solver(text1,text2,n1,n2,i1,i2+1,dp);
+            
+//             return dp[i1][i2] = max(ans1,ans2);
+//         }
+        
+//         return 0;
+//     }
+public:
+    int longestCommonSubsequence(string text1, string text2) {
+        
+        int n1 = text1.size();
+        int n2 = text2.size();
+        
+        vector<vector<int>>dp(n1+1,vector<int>(n2+1,-1));
+      //  return solver(text1,text2,n1,n2,0,0,dp);
+        
+        for(int i2=0;i2<=n2;i2++) dp[n1][i2] = 0;
+        
+        for(int i1=0;i1<=n1;i1++) dp[i1][n2] = 0;
+        
+        for(int i1 = n1-1; i1>=0; i1--){
+            for(int i2 = n2-1; i2>=0; i2--){
+                
+                if(text1[i1]==text2[i2]) dp[i1][i2] = 1 + dp[i1+1][i2+1];
+                else{
+                    
+                    int ans1 = 0 + dp[i1+1][i2];
+                    int ans2 = 0 + dp[i1][i2+1];
+                    
+                    dp[i1][i2] = max(ans1,ans2);
+                }
+            }
+        }
+        return dp[0][0];
+    }
+};
