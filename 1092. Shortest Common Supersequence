@@ -1,0 +1,58 @@
+class Solution {
+public:
+    string shortestCommonSupersequence(string str1, string str2) {
+        
+        int n1 = str1.size();
+        int n2 = str2.size();
+        
+        vector<vector<int>>dp(n1+1,vector<int>(n2+1,-1));
+        
+        for(int i1 = n1;i1>=0;i1--){
+            for(int i2 = n2;i2>=0;i2--){
+                
+                if(i1==n1 || i2==n2) dp[i1][i2] = 0;
+                else{
+                    if(str1[i1]==str2[i2])   dp[i1][i2] = 1+ dp[i1+1][i2+1];
+                    else{
+                        
+                        int a = 0 + dp[i1+1][i2];
+                        int b = 0 + dp[i1][i2+1];
+                        
+                        dp[i1][i2] = max(a,b);
+                    }
+                }
+            }
+        }
+        
+        string ans = "";
+        int i1 = 0, i2 = 0; 
+        
+        while(i1<n1 && i2<n2){
+            
+            if(str1[i1]==str2[i2]){
+                
+                ans += str1[i1];
+                i1++;
+                i2++;
+            }
+            else{
+                
+                if(dp[i1+1][i2]>dp[i1][i2+1]){
+                    
+                    ans += str1[i1];
+                    i1++;
+                }
+                else{
+                    
+                    ans += str2[i2];
+                    i2++;
+                }
+            }
+        }
+        
+        while(i1<n1) ans += str1[i1++];
+        while(i2<n2) ans += str2[i2++];
+        
+        return ans;
+    }
+};
